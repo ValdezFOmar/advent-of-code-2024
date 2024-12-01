@@ -1,28 +1,31 @@
 mod days;
 mod etc;
 
+use days::{
+    day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11, day12, day13,
+    day14, day15, day16, day17, day18, day19, day20, day21, day22, day23, day24, day25,
+};
 use etc::solution::Solution;
-use days::{day01, day02, day03, day04, day05,
-           day06, day07, day08, day09, day10,
-           day11, day12, day13, day14, day15,
-           day16, day17, day18, day19, day20,
-           day21, day22, day23, day24, day25};
 use std::env;
 use std::time::Instant;
 
 pub type SolutionPair = (Solution, Solution);
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        panic!("Please provide the day(s) to run as a command-line argument.");
-    }
-
-    let days: Vec<u8> = args[1..].iter()
-        .map(|x| x.parse().unwrap_or_else(|v| panic!("Not a valid day: {}", v)))
+    let days: Vec<u8> = env::args()
+        .skip(1)
+        .map(|arg| {
+            arg.parse()
+                .unwrap_or_else(|v| panic!("Not a valid day: {}", v))
+        })
         .collect();
 
+    if days.is_empty() {
+        panic!("Please provide the day(s) to run as command-line argument.");
+    }
+
     let mut runtime = 0.0;
+    let delimiter = "---------------------";
 
     for day in days {
         let func = get_day_solver(day);
@@ -30,11 +33,13 @@ fn main() {
         let time = Instant::now();
         let (p1, p2) = func();
         let elapsed_ms = time.elapsed().as_nanos() as f64 / 1_000_000.0;
-        
-        println!("\n=== Day {:02} ===", day);
-        println!("  · Part 1: {}", p1);
-        println!("  · Part 2: {}", p2);
-        println!("  · Elapsed: {:.4} ms", elapsed_ms);
+
+        println!("{}", delimiter);
+        println!("{:^1$}", format!("Day {:02}", day), delimiter.len());
+        println!("{}", delimiter);
+        println!("part 1: {: >10}", p1);
+        println!("part 2: {: >10}", p2);
+        println!("time:   {: >10.4} ms\n", elapsed_ms);
 
         runtime += elapsed_ms;
     }
@@ -44,15 +49,15 @@ fn main() {
 
 fn get_day_solver(day: u8) -> fn() -> SolutionPair {
     match day {
-         1 => day01::solve,
-         2 => day02::solve,
-         3 => day03::solve,
-         4 => day04::solve,
-         5 => day05::solve,
-         6 => day06::solve,
-         7 => day07::solve,
-         8 => day08::solve,
-         9 => day09::solve,
+        1 => day01::solve,
+        2 => day02::solve,
+        3 => day03::solve,
+        4 => day04::solve,
+        5 => day05::solve,
+        6 => day06::solve,
+        7 => day07::solve,
+        8 => day08::solve,
+        9 => day09::solve,
         10 => day10::solve,
         11 => day11::solve,
         12 => day12::solve,
@@ -69,6 +74,6 @@ fn get_day_solver(day: u8) -> fn() -> SolutionPair {
         23 => day23::solve,
         24 => day24::solve,
         25 => day25::solve,
-         _ => unimplemented!(),
+        _ => unimplemented!(),
     }
 }
