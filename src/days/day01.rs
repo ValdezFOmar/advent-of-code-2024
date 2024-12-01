@@ -1,6 +1,6 @@
 use crate::{Solution, SolutionPair};
 use std::collections::HashMap;
-use std::fs::read_to_string;
+use std::fs;
 
 fn number_lists(input: &str) -> (Vec<i64>, Vec<i64>) {
     let mut left_column = Vec::new();
@@ -43,7 +43,7 @@ fn solution_2(input: &str) -> i64 {
     }
 
     left.iter()
-        .map(|num| match counts.get(&num) {
+        .map(|num| match counts.get(num) {
             Some(count) => num * count,
             None => 0,
         })
@@ -51,16 +51,14 @@ fn solution_2(input: &str) -> i64 {
 }
 
 pub fn solve() -> SolutionPair {
-    let sol1 = match read_to_string("input/day01.txt") {
-        Ok(input) => solution_1(&input),
-        Err(_) => 0,
-    };
-    let sol2 = match read_to_string("input/day01.txt") {
-        Ok(input) => solution_2(&input),
-        Err(_) => 0,
-    };
-
-    (Solution::from(sol1), Solution::from(sol2))
+    match fs::read_to_string("input/day01.txt") {
+        Ok(input) => {
+            let sol1 = solution_1(&input);
+            let sol2 = solution_2(&input);
+            (Solution::from(sol1), Solution::from(sol2))
+        }
+        Err(_) => (Solution::from(0), Solution::from(0)),
+    }
 }
 
 #[cfg(test)]
