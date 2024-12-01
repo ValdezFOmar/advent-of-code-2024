@@ -1,5 +1,4 @@
 use std::fmt::{Display, Formatter, Result};
-use Solution::*;
 
 #[derive(Clone)]
 pub enum Solution {
@@ -21,19 +20,19 @@ pub enum Solution {
 impl Display for Solution {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
-            I8(x) => x.fmt(f),
-            I16(x) => x.fmt(f),
-            I32(x) => x.fmt(f),
-            I64(x) => x.fmt(f),
-            I128(x) => x.fmt(f),
-            Isize(x) => x.fmt(f),
-            U8(x) => x.fmt(f),
-            U16(x) => x.fmt(f),
-            U32(x) => x.fmt(f),
-            U64(x) => x.fmt(f),
-            U128(x) => x.fmt(f),
-            Usize(x) => x.fmt(f),
-            Str(x) => x.fmt(f),
+            Solution::I8(x) => x.fmt(f),
+            Solution::I16(x) => x.fmt(f),
+            Solution::I32(x) => x.fmt(f),
+            Solution::I64(x) => x.fmt(f),
+            Solution::I128(x) => x.fmt(f),
+            Solution::Isize(x) => x.fmt(f),
+            Solution::U8(x) => x.fmt(f),
+            Solution::U16(x) => x.fmt(f),
+            Solution::U32(x) => x.fmt(f),
+            Solution::U64(x) => x.fmt(f),
+            Solution::U128(x) => x.fmt(f),
+            Solution::Usize(x) => x.fmt(f),
+            Solution::Str(x) => x.fmt(f),
         }
     }
 }
