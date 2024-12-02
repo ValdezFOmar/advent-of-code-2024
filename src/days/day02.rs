@@ -1,12 +1,41 @@
 use crate::{Solution, SolutionPair};
+use regex::Regex;
 use std::fs;
 
-fn solution_1(_input: &str) -> i64 {
-    0
+fn get_numbers(text: &str) -> Vec<i32> {
+    let nums_pattern = Regex::new(r"\d+").unwrap();
+    nums_pattern
+        .find_iter(text)
+        .map(|m| m.as_str().parse().expect("a valid usize"))
+        .collect()
 }
 
-fn solution_2(_input: &str) -> i64 {
-    0
+fn solution_1(input: &str) -> usize {
+    fn is_safe_report(levels: &Vec<i32>) -> bool {
+        levels.windows(2).all(|w| {
+            let diff = (w[0] - w[1]).abs();
+            diff >= 1 && diff <= 3
+        }) && (levels.windows(2).all(|w| w[0] < w[1]) || levels.windows(2).all(|w| w[0] > w[1]))
+    }
+
+    input
+        .lines()
+        .map(get_numbers)
+        .filter(is_safe_report)
+        .count()
+}
+
+fn solution_2(input: &str) -> usize {
+    fn is_safe_report(_levels: &Vec<i32>) -> bool {
+        true
+    }
+
+
+    input
+        .lines()
+        .map(get_numbers)
+        .filter(is_safe_report)
+        .count()
 }
 
 pub fn solve() -> SolutionPair {
@@ -24,15 +53,22 @@ pub fn solve() -> SolutionPair {
 mod tests {
     use super::*;
 
-    const EXAMPLE: &str = "";
+    const EXAMPLE: &str = "\
+7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9
+";
 
     #[test]
     fn example_1() {
-        assert_eq!(solution_1(EXAMPLE), 0);
+        assert_eq!(solution_1(EXAMPLE), 2);
     }
 
     #[test]
     fn example_2() {
-        assert_eq!(solution_2(EXAMPLE), 0);
+        assert_eq!(solution_2(EXAMPLE), 4);
     }
 }
