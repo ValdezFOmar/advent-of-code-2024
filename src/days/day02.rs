@@ -11,30 +11,29 @@ fn get_numbers(text: &str) -> Vec<i32> {
 }
 
 fn solution_1(input: &str) -> usize {
-    fn is_safe_report(levels: &Vec<i32>) -> bool {
-        levels.windows(2).all(|w| {
-            let diff = (w[0] - w[1]).abs();
-            diff >= 1 && diff <= 3
-        }) && (levels.windows(2).all(|w| w[0] < w[1]) || levels.windows(2).all(|w| w[0] > w[1]))
+    fn is_safe_report(levels: &[i32]) -> bool {
+        levels
+            .windows(2)
+            .all(|w| (1..=3).contains(&(w[0] - w[1]).abs()))
+            && (levels.windows(2).all(|w| w[0] < w[1]) || levels.windows(2).all(|w| w[0] > w[1]))
     }
 
     input
         .lines()
         .map(get_numbers)
-        .filter(is_safe_report)
+        .filter(|v| is_safe_report(v))
         .count()
 }
 
 fn solution_2(input: &str) -> usize {
-    fn is_safe_report(_levels: &Vec<i32>) -> bool {
+    fn is_safe_report(_levels: &[i32]) -> bool {
         true
     }
-
 
     input
         .lines()
         .map(get_numbers)
-        .filter(is_safe_report)
+        .filter(|v| is_safe_report(v))
         .count()
 }
 
