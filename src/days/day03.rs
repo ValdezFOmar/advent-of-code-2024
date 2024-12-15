@@ -1,10 +1,13 @@
 use crate::{Solution, SolutionPair};
 use regex::Regex;
 use std::fs;
+use std::sync::LazyLock;
+
+static NUMBERS_PATTERN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"mul\((\d+),(\d+)\)").unwrap());
 
 fn solution_1(input: &str) -> i64 {
-    Regex::new(r"mul\((\d+),(\d+)\)")
-        .unwrap()
+    NUMBERS_PATTERN
         .captures_iter(input)
         .map(|caps| {
             let (_, [left, right]) = caps.extract();
@@ -41,7 +44,7 @@ fn solution_2(input: &str) -> i64 {
             total += solution_1(&text[..start]);
         }
 
-        text = &text[start + instruction.bytes().len()..];
+        text = &text[start + instruction.len()..];
         enable = !enable;
     }
 
